@@ -286,7 +286,8 @@ class GraphWin(tk.Canvas):
         """Set pixel raw (independent of window coordinates) pixel
         (x,y) to color"""
         self.__checkOpen()
-        self.create_line(x,y,x+1,y, fill=color)
+        for i in range(3):
+            self.create_line(x+i,y,x+i,y+2, fill=color)
         self.__autoflush()
       
     def flush(self):

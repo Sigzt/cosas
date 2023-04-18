@@ -1,18 +1,62 @@
 from graphics import *
 from math import *
 from customtools import *
+import random
+import time
 a = 300
 win = GraphWin("hola!",a,a)
 ajuste = lambda x: Point(x[0],a/2-x[1])
 phi = (1+sqrt(5))/2
-def curvas(n,r,funx,funy,perm):
+def curvas(n,r,funx,perm):
     x = [(i-n)/n*r[0] + i/n*r[1] for i in range(1,n+1)]
-    p = [ajuste([funx(a),funy(a)]) for a in x]
+    p = [ajuste(funx(a)) for a in x]
     for a in p:
         a.draw(win)
     li = [Line(p[i],p[i+1]) for i in range(len(p)-1)]
     for l in li:
         l.draw(win)
+def seq(c,fun,it,const):
+    p0 = Point(c[0],c[1])
+    n = [1.2,0.8]
+    p = c
+    rp1 = [(p[0]+n[0])*150/n[0],300-(p[1]+n[1])*180/n[1]]   
+    win.plot(rp1[0],rp1[1],"green")
+    for i in range(it):       
+        p1 = fun(p,const)
+        rp1 = [(p1[0]+n[0])*150/n[0],300-(p1[1]+n[1])*180/n[1]]       
+        p = p1
+        fastplot(rp1[0],rp1[1],color_rgb(random.randint(0,1),random.randint(0,1),random.randint(0,1)))
+def seql(c,fun,it,const):
+    p0 = Point(c[0],c[1])
+    n = [1.2,0.8]
+    p = c
+    rp = [(p[0]+n[0])*150/n[0],300-(p[1]+n[1])*180/n[1]]   
+    for i in range(it):       
+        p1 = fun(p,const)
+        rp1 = [(p1[0]+n[0])*150/n[0],300-(p1[1]+n[1])*180/n[1]]     
+        win.create_line( rp[0],rp[1],rp1[0],rp1[1],fill=color_rgb(random.randint(0,255),random.randint(0,255),random.randint(0,255)) )  
+        p = p1
+        rp = rp1   
+def seqm(c,fun,it,const):
+    p0 = Point(c[0],c[1])
+    n = [1.2,0.8]
+    p = c
+    rp1 = [(p[0]+n[0])*150/n[0],300-(p[1]+n[1])*180/n[1]]   
+    q = Rectangle(Point(rp1[0]-2,rp1[1]-2),Point(rp1[0]+2,rp1[1]+2))
+    co = color_rgb(random.randint(0,255),random.randint(0,255),random.randint(0,255))
+    q.setOutline(co)
+    q.draw(win)
+    for i in range(it):       
+        fastplot(rp1[0],rp1[1],co)   
+        p1 = fun(p,const)
+        rp1 = [(p1[0]+n[0])*150/n[0],300-(p1[1]+n[1])*180/n[1]]       
+        p = p1
+        co = color_rgb(random.randint(0,255),random.randint(0,255),random.randint(0,255))
+        q.undraw()
+        q = Rectangle(Point(rp1[0]-2,rp1[1]-2),Point(rp1[0]+2,rp1[1]+2))
+        q.setOutline(co)
+        q.draw(win)
+        time.sleep(0.1)
 def oa ():
     Line(Point(0,a/2),Point(a,a/2)).draw(win)
 def fractal(dim,r,it,di,palette):
@@ -26,6 +70,7 @@ def fractal(dim,r,it,di,palette):
     return mapa
 def fastplot(x,y,col):
     win.create_line(x,y,x+2,y+2, fill=col)
+    win.create_line(x,y+1,x+2,y, fill=col)
 def convergence(p,fun,it,di):
     a,i = p,0
     while mod(a)<di and i<it:
@@ -44,7 +89,12 @@ def convergence(p,fun,it,di):
         return 1
     return 0        
 #curvas(100,[0,5],lambda x: 400*log(x),lambda x: 40*sin(x),20)
-win.plot(200,200,"red")
+
+fl = lambda x,c: [1-c[0]*x[0]**2+x[1],c[1]*x[0]]
+seql([1,1],fl,5000,[1.4,0.3])
+seq([1,1],fl,5000,[1.4,0.3])
+input()
+"""
 m = fractal(300,[-2,2],20,2,["black","teal","turquoise","blue"])
 fun = lambda x,c: x**2+c
 while True:
@@ -60,3 +110,4 @@ while True:
         p = p1
         rp = rp1
     print(p)
+"""
