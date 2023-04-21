@@ -91,7 +91,7 @@ def convergence(p,fun,it,di):
 #curvas(100,[0,5],lambda x: 400*log(x),lambda x: 40*sin(x),20)
 
 fl = lambda x,c: [1-c[0]*x[0]**2+x[1],c[1]*x[0]]
-seql([1,1],fl,5000,[1.4,0.3])
+#seql([1,1],fl,5000,[1.4,0.3])
 seq([1,1],fl,5000,[1.4,0.3])
 input()
 """
