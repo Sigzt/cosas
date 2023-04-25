@@ -21,8 +21,8 @@ def convergence(p,fun,it,di):
         a = fun(a,p)
     if it == i:
         return "black"
-    return color_rgb(0,10*i,8*i)
-if int(input("pulse 1 para saltar configuración")) != 1:
+    return color_rgb(0,int(200*i/it),int(200*i/it))
+if input("pulse 1 para  configuración") == "1":
     print("Hola!, introduzca las dimensiones de la ventana (recomendado 300):")
     dim = int(input())
     win = GraphWin("hola!",dim,dim)
@@ -32,19 +32,23 @@ if int(input("pulse 1 para saltar configuración")) != 1:
     it = int(input("Seleccione el número de iteraciones: "))
     jitt = int(input("rango de jitter:"))
 else:
-    dim,fun,it,jitt = 300,func(0,2),20,1
+    dim,fun,it,jitt = 300,func(0,2),40,1
     win = GraphWin("hola!",dim,dim)
-m = fractal(dim,[-2,2],it,2,fun,jitt)
+    ra = [-1.2,1.2]
+    rs = ra[1]-ra[0]
+    raa = max(ra)
+m = fractal(dim,ra,it,2,fun,jitt)
 while True:
     a = win.getMouse()
     x,y = int(a.x),int(a.y)
     p0 = m[x][y]
     p = p0
+    print(p)
     rp = [x,y]
-    for i in range(10):
+    for i in range(5):
         p1 = fun(p,p0)
-        rp1 = [(p1.real+2)*dim/4,dim-(p1.imag+2)*dim/4]
+        rp1 = [(p1.real+raa)/rs*dim,dim-(p1.imag+raa)/rs*dim]
         win.create_line(rp[0],rp[1],rp1[0],rp1[1],fill="white")
         p = p1
         rp = rp1
-    print(p)
+    
